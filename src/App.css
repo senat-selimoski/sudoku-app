@@ -2,9 +2,6 @@
 html, body, #root, .App {
   margin: 0;
   padding: 0;
-  height: 100%;
-  width: 100%;
-  box-sizing: border-box;
 }
 
 body {
@@ -12,20 +9,21 @@ body {
   background-color: #f4f7f6;
   color: #333;
   display: flex;
-  justify-content: center;
-  align-items: stretch;
+  justify-content: start;
+  align-items: start;
   min-height: 100vh;
-  overflow-y: auto; /* Allow vertical scrolling if content overflows */
+  overflow-y: auto;
 }
 
 #root {
+  display: flex;
   max-width: none;
   background-color: transparent;
   border-radius: 0;
   box-shadow: none;
   padding: 0;
   width: 100%;
-  height: 100%;
+  min-height: 100%;
 }
 
 .App {
@@ -66,11 +64,13 @@ body {
 
 main {
   display: flex;
+  flex: 1;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
   margin-top: 100px;
   min-width: 50%;
+  height: 100%;
 }
 
 .user-info {
@@ -253,7 +253,7 @@ main {
   padding: 10px 15px;
   border-radius: 5px;
   font-weight: bold;
-  width: 80%;
+  width: 60%;
   text-align: center;
 }
 
@@ -318,9 +318,6 @@ main {
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-  #root {
-    height: fit-content;
-  }
 
   .app-header {
     width: 100%;
@@ -426,7 +423,7 @@ main {
     display: flex;
     width: 80%;
     justify-content: space-between;
-    margin-top: 50px;
+    margin-top: 0;
     align-items: center;
     gap: 5px;
   }
@@ -438,12 +435,57 @@ main {
   .App {
     min-height: 100%;
   }
+
+  main {
+    margin-top: 30px;
+  }
 }
 
 @media (min-width: 1025px) {
   main {
-    max-width: 50%;
+    max-width: 60%;
     margin-left: auto;
     margin-right: auto;
   }
 }
+
+/* Game Stats Styles */
+.game-stats {
+  width: 80%;
+  max-width: 500px; /* Adjust as needed */
+  margin: 20px auto;
+  padding: 15px;
+  background-color: #e0f2f7; /* Light blue background */
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  color: #004d60;
+  font-weight: bold;
+}
+
+.game-stats p {
+  margin: 5px 0;
+  font-size: 1.1em;
+}
+
+/* Footer Styles */
+.app-footer {
+  display: flex;
+  justify-content: center;
+  align-self: flex-end;
+  bottom: 0;
+  width: 100%;
+  padding: 20px 0;
+  background-color: #007b9b;
+  color: white;
+  text-align: center;
+  margin-top: auto; /* Push footer to the bottom */
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.app-footer p {
+  margin: 0;
+  font-size: 0.9em;
+}
+
+

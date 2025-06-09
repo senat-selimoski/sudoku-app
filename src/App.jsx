@@ -21,6 +21,19 @@ const PrivateRoute = ({ children }) => {
   return isAuthenticated ? children : null; 
 };
 
+const PublicRoute = ({ children }) => {
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/puzzle'); // Redirect to puzzle if authenticated
+    }
+  }, [isAuthenticated, navigate]);
+
+  return isAuthenticated ? null : children; // Render children only if not authenticated
+};
+
 function App() {
   const dispatch = useDispatch();
 
@@ -32,13 +45,22 @@ function App() {
     }
   }, [dispatch]);
 
+  const currentYear = new Date().getFullYear();
+
   return (
     <Router>
       <div className="App">
         <Header />
         <main>
           <Routes>
-            <Route path="/" element={<LoginForm />} />
+            <Route
+              path="/"
+              element={
+                <PublicRoute>
+                  <LoginForm />
+                </PublicRoute>
+              }
+            />
             <Route
               path="/puzzle"
               element={
@@ -49,6 +71,9 @@ function App() {
             />
           </Routes>
         </main>
+        <footer className="app-footer">
+          <p>&copy; {currentYear} Senat Selimoski. All rights reserved.</p>
+        </footer>
       </div>
     </Router>
   );

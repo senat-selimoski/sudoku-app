@@ -1,71 +1,41 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React from 'react';
 import Cell from './Cell';
-import { generateNewPuzzle, setCellValue, resetPuzzle, setValidationMessage } from '../store/puzzleSlice';
-import SudokuValidator from '../utils/SudokuValidator';
+import useSudokuGrid from '../hooks/useSudokuGrid';
 
 const SudokuGrid = () => {
-  const dispatch = useDispatch();
-  const { grid, lockedCells, size, message, isSolved, difficulty } = useSelector((state) => state.puzzle);
-  const [selectedSize, setSelectedSize] = useState(size);
-  const [selectedDifficulty, setSelectedDifficulty] = useState(difficulty);
-
-  useEffect(() => {
-    if (grid.length === 0) {
-      dispatch(generateNewPuzzle({ size: selectedSize, difficulty: selectedDifficulty }));
-    }
-  }, [dispatch, grid.length, selectedSize, selectedDifficulty]);
-
-  const handleCellChange = (row, col, value) => {
-    const isCellLocked = lockedCells.some(cell => cell.row === row && cell.col === col);
-    if (!isCellLocked) {
-      dispatch(setCellValue({ row, col, value }));
-    }
-  };
-
-  const handleCheck = () => {
-    if (SudokuValidator.validate(grid, size)) {
-      if (SudokuValidator.isSolved(grid, size)) {
-        dispatch(setValidationMessage('Congratulations! You solved the puzzle!'));
-      } else {
-        dispatch(setValidationMessage('Grid is valid so far, but not yet solved. Keep going!'));
-      }
-    } else {
-      dispatch(setValidationMessage('Oops! There are errors in your puzzle.'));
-    }
-  };
-
-  const handleReset = () => {
-    dispatch(resetPuzzle());
-  };
-
-  const handleSizeChange = (e) => {
-    const newSize = parseInt(e.target.value, 10);
-    setSelectedSize(newSize);
-    dispatch(generateNewPuzzle({ size: newSize, difficulty: selectedDifficulty }));
-  };
-
-  const handleDifficultyChange = (e) => {
-    const newDifficulty = e.target.value;
-    setSelectedDifficulty(newDifficulty);
-    dispatch(generateNewPuzzle({ size: selectedSize, difficulty: newDifficulty }));
-  };
+  const {
+    grid,
+    lockedCells,
+    size,
+    message,
+    isSolved,
+    difficulty,
+    tries,
+    wins,
+    user,
+    handleCellChange,
+    handleCheck,
+    handleReset,
+    handleSizeChange,
+    handleDifficultyChange,
+  } = useSudokuGrid();
 
   return (
     <div className="sudoku-container">
       <div className="controls">
         <div className="controls-select">
             <label htmlFor="grid-size">Select Grid Size:</label>
-            <select id="grid-size" value={selectedSize} onChange={handleSizeChange}>
+            <select id="grid-size" value={size} onChange={handleSizeChange}>
                 <option value="4">4x4</option>
                 <option value="5">5x5</option>
                 <option value="6">6x6</option>
+                <option value="9">9x9</option>
             </select>
         </div>
         
         <div className="controls-select">
             <label htmlFor="difficulty">Difficulty:</label>
-            <select id="difficulty" value={selectedDifficulty} onChange={handleDifficultyChange}>
+            <select id="difficulty" value={difficulty} onChange={handleDifficultyChange}>
                 <option value="easy">Easy</option>
                 <option value="medium">Medium</option>
                 <option value="hard">Hard</option>
@@ -103,6 +73,9 @@ const SudokuGrid = () => {
             />
           );
         })}
+      </div>
+      <div className="game-stats">
+        <p>{user.username} has tried {tries || 0} tries and won {wins || 0} wins.</p>
       </div>
     </div>
   );
