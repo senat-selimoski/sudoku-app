@@ -45,10 +45,13 @@ sudoku-app/
 ├── public/
 ├── src/
 │   ├── assets/ (if any images or static assets)
+│   ├── components/
 │   │   ├── Cell.jsx
 │   │   ├── Header.jsx
 │   │   ├── LoginForm.jsx
 │   │   └── SudokuGrid.jsx
+│   ├── hooks/
+│   │   ├── useSudokuGrid.js
 │   ├── store/
 │   │   ├── authSlice.js
 │   │   ├── puzzleSlice.js
